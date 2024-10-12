@@ -14,9 +14,21 @@ const Home = () => {
   const fetchData = async() => {
     const response = await axios.get(API_URL);
     const result = await response.data;
-    console.log('result',result);
     setProducts(result);
-  }
+    setFilteredProducts(result)
+  };
+
+  const handleCategoryFilter = (event) => {
+const isChecked = event.target.checked;
+
+if(isChecked){
+  setCategoryFilter((prevVal) => [...prevVal, event.target.value])
+} else {
+  setCategoryFilter((prevVal) => prevVal.filter((item)=> item !== event.target.value))
+}
+  };
+
+  
 
   useEffect(()=>{
     fetchData();
@@ -28,6 +40,10 @@ const Home = () => {
       <Products 
       products={products}
       setProducts={setProducts}
+      categoryFilter={categoryFilter}
+      handleCategoryFilter={handleCategoryFilter}
+      filteredProducts={filteredProducts}
+      setFilteredProducts={setFilteredProducts}
       />
       <Footer />
     </div>

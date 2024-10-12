@@ -1,15 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import vectorLeft from "../assets/Vector-left.png";
 import vectorRight from "../assets/Vector-right.png";
 import CheckBoxFilter from "./CheckBoxFilter";
 import ProductCard from "./ProductCard";
 
-const Products = ({ products, setProducts }) => {
+const Products = ({ products, categoryFilter, handleCategoryFilter, filteredProducts, setFilteredProducts }) => {
   const [toggle, setToggle] = useState(false);
 
   const handleToggle = () => {
     setToggle(!toggle);
   };
+
+  const applyFilters = (categories) => {
+let updatedData = [...filteredProducts];
+
+if(categories.length){
+  updatedData = updatedData.filter((listing)=>(categoryFilter.includes(listing.category)))
+};
+
+return updatedData;
+  };
+
+  let displayData = applyFilters(categoryFilter)
+
+  useEffect(()=>{
+    setFilteredProducts(products)
+  },[products])
   return (
     <div>
       <div className="product-header">
@@ -44,12 +60,15 @@ const Products = ({ products, setProducts }) => {
       <div className="product-footer">
         {
           toggle ? (
-            <CheckBoxFilter />
+            <CheckBoxFilter 
+            categoryFilter={categoryFilter}
+            handleCategoryFilter={handleCategoryFilter}
+            />
           ) : ""
         }
         
         <div className="grid-container">
-          {products?.map((product) => (
+          {displayData?.map((product) => (
             <div className="grid-item">
               <ProductCard product={product} key={product.id} />
             </div>

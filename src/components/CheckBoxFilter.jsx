@@ -3,7 +3,7 @@ import { Accordion, AccordionItem as Item } from "@szhsin/react-accordion";
 import styles from "./CheckBoxFilter.module.css";
 import chevronDown from "./chevron-down.svg";
 
-const CheckBoxFilter = () => {
+const CheckBoxFilter = ({categoryFilter, handleCategoryFilter}) => {
 
   const AccordionItem = ({ header, ...rest }) => (
     <Item
@@ -48,7 +48,14 @@ const CheckBoxFilter = () => {
           <AccordionItem header={content} className="accordian-item">
             {categories?.map((item) => (
               <div key={item.id} className="categories-item">
-              <input type="checkbox" id="" name="" value="" />
+              <input 
+              type="checkbox" 
+              id="" 
+              name="" 
+              value={item}
+              checked={categoryFilter.includes(item)}
+              onChange={handleCategoryFilter}
+               />
               <label>{item}</label>
               </div>
 
