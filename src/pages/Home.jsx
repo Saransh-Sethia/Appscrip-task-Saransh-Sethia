@@ -10,6 +10,7 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState([]);
+  const [sortBy, setSortBy] = useState("")
   
   const fetchData = async() => {
     const response = await axios.get(API_URL);
@@ -28,7 +29,7 @@ if(isChecked){
 }
   };
 
-  
+
 
   useEffect(()=>{
     fetchData();
@@ -44,6 +45,9 @@ if(isChecked){
       handleCategoryFilter={handleCategoryFilter}
       filteredProducts={filteredProducts}
       setFilteredProducts={setFilteredProducts}
+      sortBy={sortBy}
+      setSortBy={setSortBy}
+      
       />
       <Footer />
     </div>

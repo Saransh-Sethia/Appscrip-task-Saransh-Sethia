@@ -3,8 +3,17 @@ import vectorLeft from "../assets/Vector-left.png";
 import vectorRight from "../assets/Vector-right.png";
 import CheckBoxFilter from "./CheckBoxFilter";
 import ProductCard from "./ProductCard";
+import Sort from "./Sort";
 
-const Products = ({ products, categoryFilter, handleCategoryFilter, filteredProducts, setFilteredProducts }) => {
+const Products = ({
+  products,
+  categoryFilter,
+  handleCategoryFilter,
+  filteredProducts,
+  setFilteredProducts,
+  sortBy,
+  setSortBy,
+}) => {
   const [toggle, setToggle] = useState(false);
 
   const handleToggle = () => {
@@ -12,20 +21,32 @@ const Products = ({ products, categoryFilter, handleCategoryFilter, filteredProd
   };
 
   const applyFilters = (categories) => {
-let updatedData = [...filteredProducts];
+    let updatedData = [...filteredProducts];
 
-if(categories.length){
-  updatedData = updatedData.filter((listing)=>(categoryFilter.includes(listing.category)))
-};
+    if (categories.length) {
+      updatedData = updatedData.filter((listing) =>
+        categoryFilter.includes(listing.category)
+      );
+    };
 
-return updatedData;
+    if(sortBy === "PRICE : Low to High"){
+      updatedData.sort((firstListing, secondListing) => 
+      firstListing.price - secondListing.price
+      )
+    } else if(sortBy === "PRICE : High to Low"){
+      updatedData.sort((firstListing, secondListing)=> 
+      secondListing.price - firstListing.price
+      )
+    };
+
+    return updatedData;
   };
 
-  let displayData = applyFilters(categoryFilter)
+  let displayData = applyFilters(categoryFilter);
 
-  useEffect(()=>{
-    setFilteredProducts(products)
-  },[products])
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]);
   return (
     <div>
       <div className="product-header">
@@ -53,20 +74,18 @@ return updatedData;
             </div>
           )}
         </div>
-        <select label="Recommended">
-          <option></option>
-        </select>
+        <Sort setSortBy={setSortBy} sortBy={sortBy}/>
       </div>
       <div className="product-footer">
-        {
-          toggle ? (
-            <CheckBoxFilter 
+        {toggle ? (
+          <CheckBoxFilter
             categoryFilter={categoryFilter}
             handleCategoryFilter={handleCategoryFilter}
-            />
-          ) : ""
-        }
-        
+          />
+        ) : (
+          ""
+        )}
+
         <div className="grid-container">
           {displayData?.map((product) => (
             <div className="grid-item">
